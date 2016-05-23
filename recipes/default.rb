@@ -7,6 +7,14 @@ package 'libffi' do
     package_name 'libffi-dev'
   end
 end
+package 'zlib' do
+  case node[:platform]
+  when 'redhat', 'centos'
+    package_name 'zlib-devel'
+  when 'ubuntu', 'debian'
+    package_name 'zlib1g-dev'
+  end
+end
 
 user 'appuser' do
   home '/opt/appuser'
@@ -28,6 +36,8 @@ end
 
 execute 'Unzip snapshot of webapp' do
   command "unzip -o /tmp/webapp_master.zip -d #{node[:webapp][:base_dir]}"
+  user  'appuser'
+  group 'appuser'
 end
 
 execute 'Install webapp dependencies' do
@@ -37,3 +47,5 @@ end
 execute 'Run webapp' do
   command "python #{node[:webapp][:base_dir]}/webapp-master/webapp.py &> #{node[:webapp][:base_dir]}/webapp.log &"
 end
+
+include_recipe 'webapp::tests'

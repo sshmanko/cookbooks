@@ -1,4 +1,4 @@
-name             "webapp-cookbook"
+name             "webapp"
 maintainer       "Sergei Shmanko"
 license          "Apache 2.0"
 description      "Installs/configures webapp"
