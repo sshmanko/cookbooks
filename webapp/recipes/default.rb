@@ -1,38 +1,9 @@
 package 'unzip'
-package 'libffi-dev' do
-  case node[:platform]
-  when 'redhat', 'centos'
-    package_name 'libffi-devel'
-  when 'ubuntu', 'debian'
-    package_name 'libffi-dev'
-  end
-end
-package 'zlib' do
-  case node[:platform]
-  when 'redhat', 'centos'
-    package_name 'zlib-devel'
-  when 'ubuntu', 'debian'
-    package_name 'zlib1g-dev'
-  end
-end
-package 'python-dev' do
-  case node[:platform]
-  when 'redhat', 'centos'
-    package_name 'python-devel'
-  when 'ubuntu', 'debian'
-    package_name 'python-dev'
-  end
-end
-package 'ruby' do
-  case node[:platform]
-  when 'redhat', 'centos'
-    package_name 'ruby'
-  when 'ubuntu', 'debian'
-    package_name 'rake'
-  end
-end
-
-
+package 'libffi-dev'
+package 'zlib1g-dev'
+package 'python-dev'
+package 'rake'
+package 'python-mysqldb'
 
 user 'appuser' do
   home '/opt/appuser'
