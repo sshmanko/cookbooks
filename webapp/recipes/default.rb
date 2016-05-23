@@ -1,4 +1,4 @@
-package 'wget'
+package 'unzip'
 package 'libffi' do
   case node[:platform]
   when 'redhat', 'centos'
@@ -15,6 +15,15 @@ package 'zlib' do
     package_name 'zlib1g-dev'
   end
 end
+package 'python-dev' do
+  case node[:platform]
+  when 'redhat', 'centos'
+    package_name 'python-devel'
+  when 'ubuntu', 'debian'
+    package_name 'python-dev'
+  end
+end
+
 
 user 'appuser' do
   home '/opt/appuser'
