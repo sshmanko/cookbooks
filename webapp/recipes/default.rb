@@ -1,5 +1,5 @@
 package 'unzip'
-package 'libffi' do
+package 'libffi-dev' do
   case node[:platform]
   when 'redhat', 'centos'
     package_name 'libffi-devel'
@@ -23,6 +23,15 @@ package 'python-dev' do
     package_name 'python-dev'
   end
 end
+package 'ruby' do
+  case node[:platform]
+  when 'redhat', 'centos'
+    package_name 'ruby'
+  when 'ubuntu', 'debian'
+    package_name 'rake'
+  end
+end
+
 
 
 user 'appuser' do
