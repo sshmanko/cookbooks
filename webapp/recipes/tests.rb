@@ -1,3 +1,3 @@
 serverspec_test 'example_spec.rb' do
-  source 'example_spec.rb'
+  source 'test_spec.rb'
 end
