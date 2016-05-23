@@ -1,0 +1,3 @@
+[submodule "chef-serverspec"]
+	path = chef-serverspec
+	url = https://github.com/jasimmons/chef-serverspec
