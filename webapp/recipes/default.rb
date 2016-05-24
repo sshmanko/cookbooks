@@ -41,7 +41,7 @@ template "#{node[:webapp][:base_dir]}/webapp-master/conf/webapp.cfg" do
 end
 
 execute 'Run webapp' do
-  command "python #{node[:webapp][:base_dir]}/webapp-master/webapp.py &> #{node[:webapp][:base_dir]}/webapp-master/log/webapp.log &"
+  command "cd #{node[:webapp][:base_dir]}/webapp-master; python webapp.py &> log/webapp.log &"
 end
 
 include_recipe 'webapp::tests'
