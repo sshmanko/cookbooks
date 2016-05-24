@@ -30,7 +30,7 @@ execute 'Unzip snapshot of webapp' do
 end
 
 execute 'Install webapp dependencies' do
-  command "python #{node[:webapp][:base_dir]}/webapp-master/setup.py install"
+  command "cd #{node[:webapp][:base_dir]}/webapp-master; python setup.py install"
 end
 
 template "#{node[:webapp][:base_dir]}/webapp-master/conf/webapp.cfg" do

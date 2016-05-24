@@ -3,9 +3,9 @@ chef cookbook for deploying webapp
 
 =============================================
 
-AWS Environment:
+#AWS Environment:
 
-# Access rules:
+### Access rules:
 aws ec2 create-security-group --group-name sec-application --description sec-application
 [note sg-id]
 aws ec2 create-security-group --group-name sec-database --description sec-database
@@ -18,15 +18,18 @@ aws ec2 authorize-security-group-ingress --group-name sec-balancer --cidr 0.0.0.
 aws ec2 authorize-security-group-ingress --group-name sec-application --cidr 0.0.0.0/0 --protocol tcp  --port 22
 aws ec2 authorize-security-group-ingress --group-name sec-application --source-group sec-balancer --protocol tcp  --port 5000
 
-# DB creation:
+### DB creation:
 aws rds create-db-instance --db-instance-identifier webappdb --allocated-storage 10 --db-instance-class db.t2.micro --engine mysql --master-username webapp --master-user-password hellowebapp12345  --vpc-security-group-ids <sg-id of sec-database>
 
-# VM creation
+### VM creation
 aws ec2 create-key-pair --key-name webappkey --output text > webappkey.pem
-aws ec2 run-instances --image-id ami-8e9ca3e4 --security-groups sec-application --instance-type t2.micro --key-name webappkey
-[note instance id, public ip]
+[remove all text before ----BEGIN RSA PRIVATE KEY  and after END RSA PRIVATE KEY----- ]
+[chmod 600 webappkey.pem]
 
-# ELB creation:
+aws ec2 run-instances --image-id ami-8e9ca3e4 --security-groups sec-application --instance-type t2.micro --key-name webappkey
+[note instance id]
+
+### ELB creation:
 aws elb create-load-balancer --load-balancer-name webappelb --listeners Protocol=http,LoadBalancerPort=80,InstanceProtocol=http,InstancePort=5000 --security-groups <sg-id of sec-balancer> --availability-zones us-east-1b
 [note dns name]
 
@@ -34,15 +37,17 @@ aws elb create-load-balancer --load-balancer-name webappelb --listeners Protocol
 
 aws elb register-instances-with-load-balancer --load-balancer-name webappelb --instances <instance id>
 
+----
 
-================================================
+##Provision app on VM:
 
-Provision app on VM:
+aws ec2 describe-instances --instance-ids <instance id> | grep PublicIp
 
 ssh -i webappkey.pem admin@publicip
 
 sudo apt-get update
+
 sudo apt-get install git, chef
 git clone --recursive https://github.com/sshmanko/cookbooks.git
 cd cookbooks
-chef-client -z -o serverspec,webapp,serverspec::run_tests
+sudo chef-client -z -o serverspec,webapp,serverspec::run_tests
