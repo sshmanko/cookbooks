@@ -20,6 +20,8 @@ aws ec2 authorize-security-group-ingress --group-name sec-application --source-g
 
 ### DB creation:  
 aws rds create-db-instance --db-instance-identifier webappdb --allocated-storage 10 --db-instance-class db.t2.micro --engine mysql --master-username webapp --master-user-password hellowebapp12345  --vpc-security-group-ids <sg-id of sec-database>  
+[note db host, user, pass, dbname]
+[edit attributes/default.rb to include correct DB parameters]
 
 ### VM creation  
 aws ec2 create-key-pair --key-name webappkey --output text > webappkey.pem  
@@ -44,6 +46,7 @@ aws ec2 describe-instances --instance-ids <instance id> | grep PublicIp
 ##Provision app on VM:  
 
 ssh -i webappkey.pem admin@publicip  
+
 sudo apt-get update  
 sudo apt-get -y install git chef  
 git clone --recursive https://github.com/sshmanko/cookbooks.git  
