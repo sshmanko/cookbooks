@@ -11,7 +11,7 @@ user 'appuser' do
   manage_home true
 end
 
-directory "#{node[:webapp][:base_dir]}" do
+directory "#{node[:webapp][:base_dir]}/webapp-master" do
   owner 'appuser'
   group 'appuser'
   mode '0750'
@@ -33,8 +33,15 @@ execute 'Install webapp dependencies' do
   command "python #{node[:webapp][:base_dir]}/webapp-master/setup.py install"
 end
 
+template "#{node[:webapp][:base_dir]}/webapp-master/conf/webapp.cfg" do
+  source "webapp.cfg.template"
+  variables({
+    :db_conf => node[:webapp][:db_conf]
+  })
+end
+
 execute 'Run webapp' do
-  command "python #{node[:webapp][:base_dir]}/webapp-master/webapp.py &> #{node[:webapp][:base_dir]}/webapp.log &"
+  command "python #{node[:webapp][:base_dir]}/webapp-master/webapp.py &> #{node[:webapp][:base_dir]}/webapp-master/log/webapp.log &"
 end
 
 include_recipe 'webapp::tests'
