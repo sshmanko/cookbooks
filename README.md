@@ -45,7 +45,7 @@ aws ec2 describe-instances --instance-ids <instance id> | grep PublicIp
 
 ssh -i webappkey.pem admin@publicip  
 sudo apt-get update  
-sudo apt-get install git, chef  
+sudo apt-get install git chef  
 git clone --recursive https://github.com/sshmanko/cookbooks.git  
 cd cookbooks  
 sudo chef-client -z -o serverspec,webapp,serverspec::run_tests  
